@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Something } from 'src/app/models/something';
-import { SomethingService } from 'src/app/services/something.service';
+import { Something, Tag } from 'src/app/models/something';
+import { SomethingService, TagService } from 'src/app/services/something.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -15,21 +15,38 @@ export class CoreComponent implements OnInit {
   somethings$: Observable<Something[]>;
   somethings: Something[];
 
+  loadingTag$: Observable<boolean>;
+  tags$: Observable<Tag[]>;
+  tags: Tag[];
+
   constructor(
     private somethingService: SomethingService,
+    private tagService: TagService
   ) {
-    // Worlds
+    // Something
     this.somethings$ = this.somethingService.entities$;
     this.loadingSomething$ = this.somethingService.loading$;
     this.somethings$.subscribe(
       (somethings: Something[]) => {
         this.somethings = _.map(somethings, (something) => {
           return {
-            data: {
-              id: something.id,
-              name: something.name,
-              entity: something
-            }
+            id: something.id,
+            name: something.name,
+            entity: something
+          };
+        });
+      });
+
+    // Tag
+    this.tags$ = this.tagService.entities$;
+    this.loadingTag$ = this.tagService.loading$;
+    this.tags$.subscribe(
+      (tags: Tag[]) => {
+        this.tags = _.map(tags, (tag) => {
+          return {
+            id: tag.id,
+            name: tag.name,
+            entity: tag
           };
         });
       });
@@ -37,6 +54,7 @@ export class CoreComponent implements OnInit {
 
   ngOnInit(): void {
     this.somethingService.getAll();
+    this.tagService.getAll();
   }
 
 }

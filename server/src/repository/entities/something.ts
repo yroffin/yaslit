@@ -18,3 +18,19 @@ export class Something {
     @Column({ name: "name" })
     name?: string
 }
+
+@Entity("tags")
+@ObjectType()
+export class Tag {
+    @Field(type => ID)
+    @ApiProperty({ type: 'string' })
+    @IsUUID()
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
+
+    @Field()
+    @ApiProperty({ type: 'string' })
+    @IsString()
+    @Column({ name: "name" })
+    name?: string
+}

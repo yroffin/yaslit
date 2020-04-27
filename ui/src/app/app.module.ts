@@ -12,6 +12,8 @@ import { entityConfig } from './entity-metadata';
 import { FormsModule } from '@angular/forms';
 import { CoreComponent } from './components/core/core.component';
 
+import { TableModule } from 'primeng/table';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +28,8 @@ import { CoreComponent } from './components/core/core.component';
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     EntityDataModule.forRoot(entityConfig),
-    StoreModule.forRoot({}, {})
+    StoreModule.forRoot({}, {}),
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

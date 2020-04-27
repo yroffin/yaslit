@@ -1,2 +1,29 @@
-<p>core works!</p>
-{{ somethings | json }}
+<p-table [value]="somethings">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-something>
+        <tr>
+            <td>{{something.id}}</td>
+            <td>{{something.name}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-table [value]="tags">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-tag>
+        <tr>
+            <td>{{tag.id}}</td>
+            <td>{{tag.name}}</td>
+        </tr>
+    </ng-template>
+</p-table>
