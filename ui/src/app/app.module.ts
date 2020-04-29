@@ -12,7 +12,12 @@ import { entityConfig } from './entity-metadata';
 import { FormsModule } from '@angular/forms';
 import { CoreComponent } from './components/core/core.component';
 
+import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { ChipsModule } from 'primeng/chips';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,12 @@ import { TableModule } from 'primeng/table';
     EffectsModule.forRoot([]),
     EntityDataModule.forRoot(entityConfig),
     StoreModule.forRoot({}, {}),
-    TableModule
+    TableModule,
+    ButtonModule,
+    InputTextModule,
+    ToastModule,
+    ChipsModule,
+    CheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

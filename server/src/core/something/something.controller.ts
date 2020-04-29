@@ -1,8 +1,32 @@
 import { Controller } from '@nestjs/common';
-import { Something, Tag } from 'src/repository/entities/something';
+import { Something, Tag, Folder } from 'src/repository/entities/something';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
-import { SomethingService, TagService } from './something.service';
+import { SomethingService, TagService, FolderService } from './something.service';
+
+@ApiTags('folder')
+@Crud({
+    model: {
+        type: Folder
+    },
+    params: {
+        id: {
+            field: 'id',
+            type: 'uuid',
+            primary: true,
+        },
+    },
+    query: {
+        join: {
+            somethings: { eager: true }
+        }
+    }
+})
+    @Controller('folder')
+export class FolderController {
+    constructor(private service: FolderService) {
+    }
+}
 
 @ApiTags('something')
 @Crud({
@@ -15,6 +39,11 @@ import { SomethingService, TagService } from './something.service';
             type: 'uuid',
             primary: true,
         },
+    },
+    query: {
+        join: {
+            tags: { eager: true }
+        }
     }
 })
 @Controller('something')
@@ -34,6 +63,11 @@ export class SomethingController {
             type: 'uuid',
             primary: true,
         },
+    },
+    query: {
+        join: {
+            somethings: { eager: true }
+        }
     }
 })
 @Controller('tag')

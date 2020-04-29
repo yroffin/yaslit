@@ -1,7 +1,7 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { Something, Tag } from './entities/something';
+import { Something, Tag, Folder } from './entities/something';
 import { SomethingResolver } from './graphql/graphql.resolver';
 
 @Module({
@@ -9,10 +9,10 @@ import { SomethingResolver } from './graphql/graphql.resolver';
         TypeOrmModule.forRoot({
             type: 'sqlite',
             database: '.test.sqlite',
-            entities: [Something, Tag],
+            entities: [Something, Tag, Folder],
             synchronize: true,
         }),
-        TypeOrmModule.forFeature([Something, Tag]),
+        TypeOrmModule.forFeature([Something, Tag, Folder]),
         GraphQLModule.forRoot({
             autoSchemaFile: 'schema.gql'
         })],
