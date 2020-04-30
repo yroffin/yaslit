@@ -1,12 +1,12 @@
 import { EntityMetadataMap } from '@ngrx/data';
 
 const entityMetadata: EntityMetadataMap = {
-  Something: {},
+  Node: {},
   Tag: {}
 };
 
 const pluralNames = {
-  Something: 'Something',
+  Node: 'Node',
   Tag: 'Tag'
 };
 

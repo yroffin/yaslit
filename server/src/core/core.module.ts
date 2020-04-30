@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { SomethingController, TagController, FolderController } from './something/something.controller';
-import { SomethingService, TagService, FolderService } from './something/something.service';
+import { NodeController, TagController, FolderController } from './node/node.controller';
+import { NodeService, TagService, FolderService } from './node/node.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Something, Tag, Folder } from 'src/repository/entities/something';
+import { Node, Tag, Folder } from 'src/repository/entities/node';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Something, Tag, Folder])],
-  providers: [SomethingService, TagService, FolderService],
-  controllers: [SomethingController, TagController, FolderController]
+  imports: [TypeOrmModule.forFeature([Node, Tag, Folder])],
+  providers: [NodeService, TagService, FolderService],
+  controllers: [NodeController, TagController, FolderController]
 })
 export class CoreModule {}

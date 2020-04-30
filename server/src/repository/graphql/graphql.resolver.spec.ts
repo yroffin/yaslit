@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SomethingResolver } from './graphql.resolver';
+import { NodeResolver } from './graphql.resolver';
 
 describe('GraphqlResolver', () => {
-  let resolver: SomethingResolver;
+  let resolver: NodeResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SomethingResolver],
+      providers: [NodeResolver],
     }).compile();
 
-    resolver = module.get<SomethingResolver>(SomethingResolver);
+    resolver = module.get<NodeResolver>(NodeResolver);
   });
 
   it('should be defined', () => {

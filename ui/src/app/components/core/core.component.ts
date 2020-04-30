@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Something, Tag } from 'src/app/models/something';
-import { SomethingService, TagService } from 'src/app/services/something.service';
+import { Node, Tag } from 'src/app/models/node';
+import { NodeService, TagService } from 'src/app/services/node.service';
 import * as _ from 'lodash';
 import { MessageService } from 'primeng/api';
 
@@ -13,9 +13,9 @@ import { MessageService } from 'primeng/api';
 })
 export class CoreComponent implements OnInit {
 
-  loadingSomething$: Observable<boolean>;
-  somethings$: Observable<Something[]>;
-  somethings: Something[];
+  loadingNode$: Observable<boolean>;
+  nodes$: Observable<Node[]>;
+  nodes: Node[];
 
   loadingTag$: Observable<boolean>;
   tags$: Observable<Tag[]>;
@@ -24,21 +24,21 @@ export class CoreComponent implements OnInit {
   value: string;
 
   constructor(
-    private somethingService: SomethingService,
+    private nodeService: NodeService,
     private tagService: TagService,
     private messageService: MessageService
   ) {
-    // Something
-    this.somethings$ = this.somethingService.entities$;
-    this.loadingSomething$ = this.somethingService.loading$;
-    this.somethings$.subscribe(
-      (somethings: Something[]) => {
-        this.somethings = _.map(somethings, (something) => {
+    // Node
+    this.nodes$ = this.nodeService.entities$;
+    this.loadingNode$ = this.nodeService.loading$;
+    this.nodes$.subscribe(
+      (nodes: Node[]) => {
+        this.nodes = _.map(nodes, (node) => {
           return {
-            id: something.id,
-            name: something.name,
-            tags: something.tags,
-            entity: something
+            id: node.id,
+            name: node.name,
+            tags: node.tags,
+            entity: node
           };
         });
       });
@@ -52,7 +52,7 @@ export class CoreComponent implements OnInit {
           return {
             id: tag.id,
             name: tag.name,
-            somethings: tag.somethings,
+            nodes: tag.nodes,
             entity: tag
           };
         });
@@ -60,17 +60,17 @@ export class CoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.somethingService.getAll();
+    this.nodeService.getAll();
     this.tagService.getAll();
   }
 
-  addSomething(event: any) {
-    this.somethingService.add({
+  addNode(event: any) {
+    this.nodeService.add({
       id: undefined,
       name: this.value
     }).subscribe(
       (updated) => {
-        this.messageService.add({ severity: 'success', summary: 'Update something', detail: `${updated.name}` });
+        this.messageService.add({ severity: 'success', summary: 'Update node', detail: `${updated.name}` });
       }
     );
   }
@@ -87,12 +87,12 @@ export class CoreComponent implements OnInit {
   }
 
 
-  addTagToSomething(event: any, tag: Tag, something: Something) {
-    this.somethingService.getByKey(something.id).subscribe(
+  addTagToNode(event: any, tag: Tag, node: Node) {
+    this.nodeService.getByKey(node.id).subscribe(
       (get) => {
         const detached = _.clone(get);
         detached.tags = _.flatMap([get.tags, tag]);
-        this.somethingService.update(detached).subscribe(
+        this.nodeService.update(detached).subscribe(
           (updated) => {
             this.messageService.add({ severity: 'success', summary: 'Add tag', detail: `${tag.name}` });
           }

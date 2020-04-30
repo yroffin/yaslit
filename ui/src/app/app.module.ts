@@ -18,11 +18,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ChipsModule } from 'primeng/chips';
 import { CheckboxModule } from 'primeng/checkbox';
+import { GraphComponent } from './components/graph/graph.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CoreComponent
+    CoreComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,

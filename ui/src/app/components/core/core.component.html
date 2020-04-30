@@ -1,7 +1,7 @@
 <p-toast></p-toast>
-<input type="text" pInputText [(ngModel)]="value" /><button pButton type="button" label="Add something"
-    (click)="addSomething($event)"></button>
-<p-table [value]="somethings">
+<input type="text" pInputText [(ngModel)]="value" /><button pButton type="button" label="Add node"
+    (click)="addNode($event)"></button>
+<p-table [value]="nodes">
     <ng-template pTemplate="header">
         <tr>
             <th>Id</th>
@@ -9,18 +9,18 @@
             <th>Tags</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-something>
+    <ng-template pTemplate="body" let-node>
         <tr>
-            <td>{{something.id}}</td>
-            <td>{{something.name}}</td>
+            <td>{{node.id}}</td>
+            <td>{{node.name}}</td>
             <td>
-                <p-chips [(ngModel)]="something.tags" disabled>
+                <p-chips [(ngModel)]="node.tags" disabled>
                     <ng-template let-item pTemplate="item">
                         {{item.name}}<i class="pi pi-check"></i>
                     </ng-template>
                 </p-chips>
                 <button pButton *ngFor="let tag of tags" type="button" label="{{tag.name}}"
-                    (click)="addTagToSomething($event, tag, something)"></button>
+                    (click)="addTagToNode($event, tag, node)"></button>
             </td>
         </tr>
     </ng-template>
@@ -33,7 +33,7 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Somethings</th>
+            <th>Nodes</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-tag>
@@ -41,7 +41,7 @@
             <td>{{tag.id}}</td>
             <td>{{tag.name}}</td>
             <td>
-                <pre>{{tag.somethings | json}}</pre>
+                <pre>{{tag.nodes | json}}</pre>
             </td>
         </tr>
     </ng-template>

@@ -1,10 +1,10 @@
 export class Folder {
     id!: string;
     name?: string;
-    somethings?: Something[];
+    nodes?: Node[];
 }
 
-export class Something {
+export class Node {
     id!: string;
     name?: string;
     folder?: Folder;
@@ -14,5 +14,5 @@ export class Something {
 export class Tag {
     id!: string;
     name?: string;
-    somethings?: Something[];
+    nodes?: Node[];
 }

@@ -1,20 +1,20 @@
 import { Resolver, Query } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Something, Tag } from '../entities/something';
+import { Node, Tag } from '../entities/node';
 
 @Resolver('Graphql')
-export class SomethingResolver {
+export class NodeResolver {
 
     constructor(
-        @InjectRepository(Something) private something,
+        @InjectRepository(Node) private node,
         @InjectRepository(Tag) private tag
     ) {
 
     }
 
-    @Query(() => [Something])
-    async somethings(): Promise<Something[]> {
-        return await this.something.find();
+    @Query(() => [Node])
+    async nodes(): Promise<Node[]> {
+        return await this.node.find();
     }
 
     @Query(() => [Tag])
