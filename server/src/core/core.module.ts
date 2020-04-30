@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { NodeController, TagController, FolderController } from './node/node.controller';
-import { NodeService, TagService, FolderService } from './node/node.service';
+import { NodeController, TagController, FolderController, EdgeController } from './node/node.controller';
+import { NodeService, TagService, FolderService, EdgeService } from './node/node.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Node, Tag, Folder } from 'src/repository/entities/node';
+import { Node, Tag, Folder, Edge } from 'src/repository/entities/node';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Node, Tag, Folder])],
-  providers: [NodeService, TagService, FolderService],
-  controllers: [NodeController, TagController, FolderController]
+  imports: [TypeOrmModule.forFeature([Node, Edge, Tag, Folder])],
+  providers: [NodeService, EdgeService, TagService, FolderService],
+  controllers: [NodeController, EdgeController, TagController, FolderController]
 })
 export class CoreModule {}

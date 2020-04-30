@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
-import { Node, Tag, Folder } from 'src/repository/entities/node';
+import { Node, Tag, Folder, Edge } from 'src/repository/entities/node';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
-import { NodeService, TagService, FolderService } from './node.service';
+import { NodeService, TagService, FolderService, EdgeService } from './node.service';
 import * as _ from 'lodash';
 
 @ApiTags('folder')
@@ -89,6 +89,30 @@ export class FolderController {
 @Controller('node')
 export class NodeController {
     constructor(private service: NodeService) {
+    }
+}
+
+@ApiTags('edge')
+@Crud({
+    model: {
+        type: Edge
+    },
+    params: {
+        id: {
+            field: 'id',
+            type: 'uuid',
+            primary: true,
+        },
+    },
+    query: {
+        join: {
+            tags: { eager: true }
+        }
+    }
+})
+@Controller('edge')
+export class EdgeController {
+    constructor(private service: EdgeService) {
     }
 }
 

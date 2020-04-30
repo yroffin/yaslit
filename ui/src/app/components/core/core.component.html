@@ -1,4 +1,31 @@
 <p-toast></p-toast>
+<input type="text" pInputText [(ngModel)]="value" /><button pButton type="button" label="Add edge"
+    (click)="addEdge($event)"></button>
+<p-table [value]="edges">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Tags</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-edge>
+        <tr>
+            <td>{{edge.id}}</td>
+            <td>{{edge.name}}</td>
+            <td>
+                <p-chips [(ngModel)]="edge.tags" disabled>
+                    <ng-template let-item pTemplate="item">
+                        {{item.name}}<i class="pi pi-check"></i>
+                    </ng-template>
+                </p-chips>
+                <button pButton *ngFor="let tag of tags" type="button" label="{{tag.name}}"
+                    (click)="addTagToEdge($event, tag, edge)"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
 <input type="text" pInputText [(ngModel)]="value" /><button pButton type="button" label="Add node"
     (click)="addNode($event)"></button>
 <p-table [value]="nodes">
