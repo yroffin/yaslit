@@ -9,6 +9,22 @@
         </div>
     </div>
     <div class="p-col">
-        <pre *ngIf="selected">{{selected | json}}</pre>
+        <div class="p-grid p-dir-col">
+            <div class="p-col">
+                <button pButton type="button" label="Add node" (click)="addNode($event)"></button><input type="text"
+                    pInputText [(ngModel)]="name" />
+            </div>
+            <div *ngIf="selected" class="p-col">
+                <i class="pi pi-plus"></i><button pButton *ngFor="let tag of tags" type="button" label="{{tag.name}}"
+                    (click)="addTagToNode($event, tag, selected)"></button>
+            </div>
+            <div *ngIf="selected" class="p-col">
+                <i class="pi pi-trash"></i><button pButton *ngFor="let tag of selected.tags" type="button"
+                    label="{{tag.name}}" (click)="deleteTagToNode($event, tag, selected)"></button>
+            </div>
+            <div class="p-col">
+                <pre *ngIf="selected">{{selected | json}}</pre>
+            </div>
+        </div>
     </div>
 </div>

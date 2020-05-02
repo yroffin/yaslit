@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { GraphService } from 'src/app/services/graph.service';
 import * as cytoscape from 'cytoscape';
 import { MessageService, MenuItem } from 'primeng/api';
-import { NodeService, EdgeService } from 'src/app/services/node.service';
-import { Node } from 'src/app/models/node';
+import { NodeService, EdgeService, TagService } from 'src/app/services/node.service';
+import { Node, Tag } from 'src/app/models/node';
+import * as _ from 'lodash';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-graph',
@@ -15,10 +17,16 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   @ViewChild('myGraph') myGraph: ElementRef;
 
+  loadingTag$: Observable<boolean>;
+  tags$: Observable<Tag[]>;
+  tags: Tag[];
+
   cy: any;
   items: MenuItem[];
 
   selected: Node;
+  name: string;
+  tag: string;
 
   tappedBefore;
   tappedTimeout;
@@ -27,12 +35,27 @@ export class GraphComponent implements OnInit, AfterViewInit {
     private graphService: GraphService,
     private messageService: MessageService,
     private nodeService: NodeService,
+    private tagService: TagService,
     private edgeService: EdgeService
   ) {
-
+    // Tag
+    this.tags$ = this.tagService.entities$;
+    this.loadingTag$ = this.tagService.loading$;
+    this.tags$.subscribe(
+      (tags: Tag[]) => {
+        this.tags = _.map(tags, (tag) => {
+          return {
+            id: tag.id,
+            name: tag.name,
+            nodes: tag.nodes,
+            entity: tag
+          };
+        });
+      });
   }
 
   ngOnInit(): void {
+    this.tagService.getAll();
     this.items = [
       {
         label: 'File',
@@ -105,6 +128,57 @@ export class GraphComponent implements OnInit, AfterViewInit {
     this.nodeService.getByKey(id).subscribe(
       (node) => {
         this.selected = node;
+      }
+    );
+  }
+
+  addNode(event: any) {
+    this.nodeService.add({
+      id: undefined,
+      name: this.name
+    }).subscribe(
+      (inserted) => {
+        this.cy.add(
+          {
+            data: {
+              id: inserted.id,
+              name: inserted.name
+            }
+          }
+        );
+        this.messageService.add({ severity: 'success', summary: 'Add node', detail: `${inserted.name}` });
+      }
+    );
+  }
+
+  addTagToNode(event: any, tag: Tag, node: Node) {
+    this.nodeService.getByKey(node.id).subscribe(
+      (get) => {
+        const detached = _.clone(get);
+        detached.tags = _.flatMap([get.tags, tag]);
+        this.nodeService.update(detached).subscribe(
+          (updated) => {
+            this.selected = updated;
+            this.messageService.add({ severity: 'success', summary: 'Add tag', detail: `${updated.name}` });
+          }
+        );
+      }
+    );
+  }
+
+  deleteTagToNode(event: any, toRemove: Tag, node: Node) {
+    this.nodeService.getByKey(node.id).subscribe(
+      (get) => {
+        const detached = _.clone(get);
+        detached.tags = _.filter(detached.tags, (tag) => {
+          return tag.id !== toRemove.id;
+        });
+        this.nodeService.update(detached).subscribe(
+          (updated) => {
+            this.selected = updated;
+            this.messageService.add({ severity: 'success', summary: 'Remove tag', detail: `${updated.name}` });
+          }
+        );
       }
     );
   }
