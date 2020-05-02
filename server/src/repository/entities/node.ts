@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, ManyToOne, OneToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, ManyToOne, OneToOne, JoinColumn } from "typeorm"
 import { IsUUID, IsString } from "class-validator"
 import { ApiProperty } from '@nestjs/swagger';
 import { Field, ObjectType, ID } from '@nestjs/graphql';
@@ -18,6 +18,7 @@ export class Folder {
     @Column({ name: "name" })
     name?: string
 
+    // Node
     @Field(() => [Node], { defaultValue: [] })
     @ApiProperty({ type: () => Node, isArray: true })
     @OneToMany<Node>(() => Node, node => node.folder, { eager: true })
@@ -45,6 +46,7 @@ export class Node {
     @ManyToOne<Folder>(() => Folder, folder => folder.nodes, { lazy: true })
     folder: Folder;
 
+    // Tag
     @Field(() => [Tag], { defaultValue: [] })
     @ApiProperty({ type: () => Tag, isArray: true })
     @ManyToMany(type => Tag)
@@ -70,13 +72,15 @@ export class Edge {
     // Source
     @Field()
     @ApiProperty({ type: () => Node })
-    @OneToOne<Node>(() => Node)
+    @ManyToOne<Node>(() => Node)
+    @JoinColumn()
     source: Node;
 
     // Target
     @Field()
     @ApiProperty({ type: () => Node })
-    @OneToOne<Node>(() => Node)
+    @ManyToOne<Node>(() => Node)
+    @JoinColumn()
     target: Node;
 
     // Folder
@@ -108,6 +112,7 @@ export class Tag {
     @Column({ name: "name" })
     name?: string
 
+    // node
     @Field(() => [Node], { defaultValue: [] })
     @ApiProperty({ type: () => Node, isArray: true })
     @ManyToMany(type => Node)

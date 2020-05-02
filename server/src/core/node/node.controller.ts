@@ -25,24 +25,40 @@ import * as _ from 'lodash';
 })
 @Controller('folder')
 export class FolderController {
-    constructor(private service: FolderService, private nodes: NodeService) {
+    constructor(
+        private service: FolderService,
+        private nodeService: NodeService,
+        private edgeService: EdgeService) {
     }
 
     @Get('graph/:id')
     async findAll(): Promise<any> {
-        let nodes = await this.nodes.find();
-        console.log(nodes);
+        let nodes = await this.nodeService.find();
+        let edges = await this.edgeService.find({ relations: ["source", "target"] });
+        console.log(edges);
         return {
-            elements: _.map<Node>(nodes, (some: Node) => {
-                return {
-                    data: {
-                        id: some.id,
-                        name: some.name
+            elements: _.union(
+                _.map<Node>(nodes, (some: Node) => {
+                    return {
+                        data: {
+                            id: some.id,
+                            name: some.name
+                        }
                     }
-                }
-            }),
+                }),
+                _.map<Node>(edges, (some: Edge) => {
+                    return {
+                        data: {
+                            id: some.id,
+                            name: some.name,
+                            source: some.source.id,
+                            target: some.target.id
+                        }
+                    }
+                })
+            ),
             layout: {
-                name: 'grid',
+                name: 'circle',
                 rows: 1
             },
             style: [

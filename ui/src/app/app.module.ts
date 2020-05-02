@@ -18,6 +18,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ChipsModule } from 'primeng/chips';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ContextMenuModule } from 'primeng/contextmenu';
+
 import { GraphComponent } from './components/graph/graph.component';
 
 @NgModule({
@@ -41,7 +43,8 @@ import { GraphComponent } from './components/graph/graph.component';
     InputTextModule,
     ToastModule,
     ChipsModule,
-    CheckboxModule
+    CheckboxModule,
+    ContextMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

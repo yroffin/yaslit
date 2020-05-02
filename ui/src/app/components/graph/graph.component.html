@@ -1,4 +1,14 @@
-<div style="width: 800px; height: 600px;">
-    <div #myGraph class="cy"></div>
+<p-toast></p-toast>
+
+<p-contextMenu [target]="target" [model]="items"></p-contextMenu>
+
+<div class="p-grid">
+    <div class="p-col">
+        <div #target style="width: 800px; height: 600px;">
+            <div #myGraph class="cy"></div>
+        </div>
+    </div>
+    <div class="p-col">
+        <pre *ngIf="selected">{{selected | json}}</pre>
+    </div>
 </div>
-<pre *ngIf="elements">{{elements | json}}</pre>
