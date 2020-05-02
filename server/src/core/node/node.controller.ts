@@ -35,7 +35,6 @@ export class FolderController {
     async findAll(): Promise<any> {
         let nodes = await this.nodeService.find();
         let edges = await this.edgeService.find({ relations: ["source", "target"] });
-        console.log(edges);
         return {
             elements: _.union(
                 _.map<Node>(nodes, (some: Node) => {
@@ -58,7 +57,7 @@ export class FolderController {
                 })
             ),
             layout: {
-                name: 'circle',
+                name: 'cose',
                 rows: 1
             },
             style: [
@@ -98,6 +97,8 @@ export class FolderController {
     },
     query: {
         join: {
+            sources: { eager: true },
+            targets: { eager: true },
             tags: { eager: true }
         }
     }

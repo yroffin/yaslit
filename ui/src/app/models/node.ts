@@ -8,6 +8,8 @@ export class Node {
     id!: string;
     name?: string;
     folder?: Folder;
+    sources?: Edge[];
+    targets?: Edge[];
     tags?: Tag[];
 }
 

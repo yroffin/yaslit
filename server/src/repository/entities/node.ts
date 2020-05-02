@@ -46,6 +46,18 @@ export class Node {
     @ManyToOne<Folder>(() => Folder, folder => folder.nodes, { lazy: true })
     folder: Folder;
 
+    // sources
+    @Field(() => [Node], { defaultValue: [] })
+    @ApiProperty({ type: () => Edge, isArray: true })
+    @OneToMany<Edge>(() => Edge, edge => edge.source, { eager: true })
+    sources: Edge[];
+
+    // target
+    @Field(() => [Node], { defaultValue: [] })
+    @ApiProperty({ type: () => Edge, isArray: true })
+    @OneToMany<Edge>(() => Edge, edge => edge.target, { eager: true })
+    targets: Edge[];
+
     // Tag
     @Field(() => [Tag], { defaultValue: [] })
     @ApiProperty({ type: () => Tag, isArray: true })

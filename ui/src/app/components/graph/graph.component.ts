@@ -85,7 +85,6 @@ export class GraphComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.graphService.getGraph('').subscribe(
       (graph: any) => {
-        console.log('element', graph.elements);
         this.cy = cytoscape({
           elements: graph.elements,
           style: graph.style,
@@ -114,7 +113,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
         this.cy.on('doubleTap', 'node', (evt) => {
           const doubleTap = evt.target.data();
-          this.linkToNode(this.selected.id, doubleTap.id);
+          this.addEdge(this.selected.id, doubleTap.id);
           this.messageService.add({
             severity: 'success',
             summary: `doubleTap ${this.selected.name} to ${doubleTap.name}`, detail: `${this.selected.id} to ${doubleTap.id}`
@@ -132,6 +131,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
     );
   }
 
+  /**
+   * add a new node
+   * @param event event
+   */
   addNode(event: any) {
     this.nodeService.add({
       id: undefined,
@@ -146,19 +149,27 @@ export class GraphComponent implements OnInit, AfterViewInit {
             }
           }
         );
+        this.selectNode(inserted.id);
+        this.cy.layout({ name: 'cose' }).start();
         this.messageService.add({ severity: 'success', summary: 'Add node', detail: `${inserted.name}` });
       }
     );
   }
 
-  addTagToNode(event: any, tag: Tag, node: Node) {
+/**
+ * tag management
+ * @param event event
+ * @param toRemove tag to remove
+ * @param node node to appy
+ */
+  addTagToNode(event: any, toAdd: Tag, node: Node) {
     this.nodeService.getByKey(node.id).subscribe(
       (get) => {
         const detached = _.clone(get);
-        detached.tags = _.flatMap([get.tags, tag]);
+        detached.tags = _.flatMap([get.tags, toAdd]);
         this.nodeService.update(detached).subscribe(
           (updated) => {
-            this.selected = updated;
+            this.selectNode(updated.id);
             this.messageService.add({ severity: 'success', summary: 'Add tag', detail: `${updated.name}` });
           }
         );
@@ -166,6 +177,12 @@ export class GraphComponent implements OnInit, AfterViewInit {
     );
   }
 
+  /**
+   * tag management
+   * @param event event
+   * @param toRemove tag to remove
+   * @param node node to appy
+   */
   deleteTagToNode(event: any, toRemove: Tag, node: Node) {
     this.nodeService.getByKey(node.id).subscribe(
       (get) => {
@@ -175,7 +192,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
         });
         this.nodeService.update(detached).subscribe(
           (updated) => {
-            this.selected = updated;
+            this.selectNode(updated.id);
             this.messageService.add({ severity: 'success', summary: 'Remove tag', detail: `${updated.name}` });
           }
         );
@@ -183,7 +200,12 @@ export class GraphComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private linkToNode(src: string, tgt: string) {
+  /**
+   * add a new edge from node `src` to node `tgt`, update current selection
+   * @param src source node
+   * @param tgt target node
+   */
+  private addEdge(src: string, tgt: string) {
     this.nodeService.getByKey(src).subscribe(
       (source) => {
         this.nodeService.getByKey(tgt).subscribe(
@@ -208,8 +230,34 @@ export class GraphComponent implements OnInit, AfterViewInit {
                     }
                   }
                 );
+                this.cy.layout({ name: 'cose' }).start();
+                this.selectNode(target.id);
               }
             );
+          }
+        );
+      }
+    );
+  }
+
+  /**
+   * delete an edge
+   * @param event event
+   * @param node current node
+   * @param edge edge to delete
+   */
+   deleteEdge(event: any, node: Node, edge: string) {
+    this.edgeService.getByKey(edge).subscribe(
+      (found) => {
+        this.edgeService.delete(found).subscribe(
+          (deleted) => {
+            this.cy.remove(this.cy.$('#' + edge));
+            this.cy.layout({ name: 'cose' }).start();
+            this.nodeService.getByKey(node.id).subscribe(
+              (target) => {
+                this.selectNode(target.id);
+                this.messageService.add({ severity: 'success', summary: 'Delete edge', detail: `${found.name}` });
+              });
           }
         );
       }

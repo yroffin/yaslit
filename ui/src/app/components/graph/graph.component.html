@@ -22,6 +22,14 @@
                 <i class="pi pi-trash"></i><button pButton *ngFor="let tag of selected.tags" type="button"
                     label="{{tag.name}}" (click)="deleteTagToNode($event, tag, selected)"></button>
             </div>
+            <div *ngIf="selected" class="p-col">
+                <i class="pi pi-trash"></i><button pButton *ngFor="let edge of selected.sources" type="button" label="{{edge.name}}"
+                    (click)="deleteEdge($event, selected, edge.id)"></button>
+            </div>
+            <div *ngIf="selected" class="p-col">
+                <i class="pi pi-trash"></i><button pButton *ngFor="let edge of selected.targets" type="button" label="{{edge.name}}"
+                    (click)="deleteEdge($event, selected, edge.id)"></button>
+            </div>
             <div class="p-col">
                 <pre *ngIf="selected">{{selected | json}}</pre>
             </div>
