@@ -19,14 +19,17 @@ import { ToastModule } from 'primeng/toast';
 import { ChipsModule } from 'primeng/chips';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { MenubarModule } from 'primeng/menubar';
 
 import { GraphComponent } from './components/graph/graph.component';
+import { ProjectComponent } from './components/project/project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CoreComponent,
-    GraphComponent
+    GraphComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { GraphComponent } from './components/graph/graph.component';
     ToastModule,
     ChipsModule,
     CheckboxModule,
-    ContextMenuModule
+    ContextMenuModule,
+    MenubarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

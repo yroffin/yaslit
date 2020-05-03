@@ -11,6 +11,7 @@ export class Node {
     sources?: Edge[];
     targets?: Edge[];
     tags?: Tag[];
+    data?: any;
 }
 
 export class Edge {

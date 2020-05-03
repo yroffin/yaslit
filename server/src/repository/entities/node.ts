@@ -64,6 +64,11 @@ export class Node {
     @ManyToMany(type => Tag)
     @JoinTable()
     tags: Tag[];
+
+    // Data
+    @ApiProperty()
+    @Column("simple-json")
+    data: { };
 }
 
 @Entity("edge")

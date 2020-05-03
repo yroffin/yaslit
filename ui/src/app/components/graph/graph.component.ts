@@ -22,7 +22,6 @@ export class GraphComponent implements OnInit, AfterViewInit {
   tags: Tag[];
 
   cy: any;
-  items: MenuItem[];
 
   selected: Node;
   name: string;
@@ -56,30 +55,6 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.tagService.getAll();
-    this.items = [
-      {
-        label: 'File',
-        items: [{
-          label: 'New',
-          icon: 'pi pi-fw pi-plus',
-          items: [
-            { label: 'Project' },
-            { label: 'Other' },
-          ]
-        },
-        { label: 'Open' },
-        { label: 'Quit' }
-        ]
-      },
-      {
-        label: 'Edit',
-        icon: 'pi pi-fw pi-pencil',
-        items: [
-          { label: 'Delete', icon: 'pi pi-fw pi-trash' },
-          { label: 'Refresh', icon: 'pi pi-fw pi-refresh' }
-        ]
-      }
-    ];
   }
 
   ngAfterViewInit(): void {
@@ -138,7 +113,10 @@ export class GraphComponent implements OnInit, AfterViewInit {
   addNode(event: any) {
     this.nodeService.add({
       id: undefined,
-      name: this.name
+      name: this.name,
+      data: {
+        value: 1
+      }
     }).subscribe(
       (inserted) => {
         this.cy.add(

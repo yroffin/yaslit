@@ -26,7 +26,7 @@ export class TagService extends TypeOrmCrudService<Tag> {
 
 @Injectable()
 export class FolderService extends TypeOrmCrudService<Folder> {
-    constructor(@InjectRepository(Tag) repo) {
+    constructor(@InjectRepository(Folder) repo) {
         super(repo);
     }
 }
